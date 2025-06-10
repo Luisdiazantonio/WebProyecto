@@ -53,8 +53,10 @@ function LoginPage() {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const [username, setUsername] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
     const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
+    const [errorMsg, setErrorMsg] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
     const handleSubmit = async (e)=>{
         e.preventDefault();
+        setErrorMsg(''); // Limpiar errores previos
         try {
             const res = await fetch('http://localhost:3000/apilocal/usuarios', {
                 method: 'POST',
@@ -68,12 +70,32 @@ function LoginPage() {
                 cache: 'no-store'
             });
             if (!res.ok) {
-                return null;
+                const err = await res.json();
+                setErrorMsg(err.error || 'Error desconocido');
+                return;
             }
             const data = await res.json();
-            return data;
+            if (!data.rol) {
+                setErrorMsg('Rol no encontrado o inválido.');
+                return;
+            }
+            switch(data.rol){
+                case 1:
+                    router.push('/paginas/admin');
+                    break;
+                case 2:
+                    router.push('/paginas/profesor');
+                    break;
+                case 3:
+                    router.push('/paginas/alumno');
+                    break;
+                default:
+                    setErrorMsg('Rol no reconocido');
+                    break;
+            }
         } catch (error) {
-            return null;
+            console.error('Error en el login:', error);
+            setErrorMsg('Error al conectar con el servidor');
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -86,7 +108,7 @@ function LoginPage() {
                     children: "SPM"
                 }, void 0, false, {
                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                    lineNumber: 40,
+                    lineNumber: 63,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -100,7 +122,7 @@ function LoginPage() {
                                     className: "mr-2"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 43,
+                                    lineNumber: 66,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -113,13 +135,13 @@ function LoginPage() {
                                     className: "bg-black outline-none text-[#00ffcc] w-full"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 44,
+                                    lineNumber: 67,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/paginas/login/page.tsx",
-                            lineNumber: 42,
+                            lineNumber: 65,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -129,7 +151,7 @@ function LoginPage() {
                                     className: "mr-2"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 55,
+                                    lineNumber: 78,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -142,14 +164,22 @@ function LoginPage() {
                                     className: "bg-black outline-none text-[#00ffcc] w-full"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 56,
+                                    lineNumber: 79,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/paginas/login/page.tsx",
-                            lineNumber: 54,
+                            lineNumber: 77,
                             columnNumber: 11
+                        }, this),
+                        errorMsg && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "text-red-500 text-sm text-center",
+                            children: errorMsg
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/paginas/login/page.tsx",
+                            lineNumber: 90,
+                            columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             type: "submit",
@@ -159,7 +189,7 @@ function LoginPage() {
                                     className: "mr-2 text-3xl"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 70,
+                                    lineNumber: 96,
                                     columnNumber: 13
                                 }, this),
                                 " ",
@@ -167,24 +197,24 @@ function LoginPage() {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/paginas/login/page.tsx",
-                            lineNumber: 66,
+                            lineNumber: 92,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                    lineNumber: 41,
+                    lineNumber: 64,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/paginas/login/page.tsx",
-            lineNumber: 39,
+            lineNumber: 62,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/paginas/login/page.tsx",
-        lineNumber: 38,
+        lineNumber: 61,
         columnNumber: 5
     }, this);
 }

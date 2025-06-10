@@ -1,0 +1,148 @@
+/* [project]/src/app/Estilos/dashboard.css [app-client] (css) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #0fc;
+  background-color: #0a0a0a;
+  flex-direction: column;
+  min-width: 320px;
+  height: 100vh;
+  font-family: Fira Code, monospace;
+  display: flex;
+  overflow: hidden;
+}
+
+.navbar {
+  z-index: 100;
+  background: linear-gradient(to right, #111, #0a0a0a);
+  border-bottom: 1px solid #0fc3;
+  align-items: center;
+  gap: 40px;
+  padding: 10px 30px;
+  display: flex;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 10px #0fc2;
+}
+
+.navbar h1 {
+  letter-spacing: 1px;
+  color: #0fc;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+  font-size: 22px;
+  display: flex;
+}
+
+.navbar h1 svg {
+  color: #0fc;
+  width: 26px;
+  height: 26px;
+}
+
+.navbar a {
+  color: #0fc;
+  border-radius: 6px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color .2s, transform .2s;
+  display: flex;
+}
+
+.navbar a:hover {
+  background-color: #0fc2;
+  transform: translateY(-2px);
+}
+
+.navbar a.active {
+  background-color: #0fc4;
+  font-weight: 700;
+}
+
+.logout-button {
+  color: #ff4d4d;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 15px;
+  transition: color .2s, transform .2s;
+  display: flex;
+}
+
+.logout-button:hover {
+  color: #ff1a1a;
+  text-decoration: underline;
+  transform: translateY(-2px);
+}
+
+.logout-button svg {
+  color: #ff4d4d;
+  width: 18px;
+  height: 18px;
+}
+
+.main-content {
+  background-color: #080808;
+  flex: 1;
+  padding: 40px 30px;
+  overflow-y: auto;
+}
+
+.section-title {
+  border-bottom: 2px solid #0fc5;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  font-size: 28px;
+}
+
+.card {
+  color: #d1fff8;
+  background-color: #111;
+  border: 1px solid #0fc3;
+  border-radius: 10px;
+  padding: 25px;
+  font-size: 16px;
+  line-height: 1.5;
+  box-shadow: 0 0 15px #0fc3;
+}
+
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background-color: #0fc4;
+  border-radius: 4px;
+}
+
+@media (width <= 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .navbar h1 {
+    margin: 0 0 10px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+}
+
+
+/*# sourceMappingURL=src_app_Estilos_dashboard_c6056df3.css.map*/

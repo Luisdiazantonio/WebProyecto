@@ -8,9 +8,11 @@ export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg(''); // Limpiar errores previos
 
     try {
       const res = await fetch('http://localhost:3000/apilocal/usuarios', {
@@ -23,14 +25,19 @@ export default function LoginPage() {
       });
 
       if (!res.ok) {
-        console.error('Error en la respuesta del servidor');
+        const err = await res.json();
+        setErrorMsg(err.error || 'Error desconocido');
         return;
       }
 
       const data = await res.json();
 
-      // Verifica el valor recibido y redirige
-      switch (data) {
+      if (!data.rol) {
+        setErrorMsg('Rol no encontrado o inválido.');
+        return;
+      }
+
+      switch (data.rol) {
         case 1:
           router.push('/paginas/admin');
           break;
@@ -41,12 +48,12 @@ export default function LoginPage() {
           router.push('/paginas/alumno');
           break;
         default:
-          console.warn('Valor inesperado recibido:', data);
+          setErrorMsg('Rol no reconocido');
           break;
       }
-
     } catch (error) {
       console.error('Error en el login:', error);
+      setErrorMsg('Error al conectar con el servidor');
     }
   };
 
@@ -79,6 +86,9 @@ export default function LoginPage() {
               className="bg-black outline-none text-[#00ffcc] w-full"
             />
           </div>
+          {errorMsg && (
+            <div className="text-red-500 text-sm text-center">{errorMsg}</div>
+          )}
           <button
             type="submit"
             className="flex items-center justify-center w-full bg-[#00ffcc] text-black font-bold py-2 rounded-md hover:bg-[#00e6b8] transition"
