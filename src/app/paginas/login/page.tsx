@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import '../../Estilos/estilo.css'; // Importar el CSS desde la ruta correspondiente
+import { IoLogIn, IoLockClosed, IoPersonSharp } from "react-icons/io5";
+import '../../Estilos/estilo.css'; // Asegúrate de que esta ruta sea válida
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,7 +13,6 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Envío al endpoint ficticio, reemplaza por tu lógica real
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -20,7 +20,7 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      router.push('/dashboard'); // Redirigir después del login
+      router.push('/dashboard');
     } else {
       alert('Usuario o contraseña incorrectos');
     }
@@ -30,23 +30,30 @@ export default function LoginPage() {
     <div className="container">
       <h2>// Examenes</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="> usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="> contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">{'>'} Entrar</button>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <IoPersonSharp style={{ marginRight: '10px' }} />
+          <input
+            type="text"
+            name="username"
+            placeholder="> usuario"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <IoLockClosed style={{ marginRight: '10px' }} />
+          <input
+            type="password"
+            name="password"
+            placeholder="> contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit"><IoLogIn style={{ marginRight: '8px' }} />{'>'} Entrar
+        </button>
       </form>
     </div>
   );
