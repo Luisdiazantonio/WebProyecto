@@ -34,3 +34,19 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## creacion base de datos
+        CREATE DATABASE Examenes;
+
+        CREATE TABLE IF NOT EXISTS usuarios (
+        id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(50) NOT NULL UNIQUE,
+        contrasena VARCHAR(10) NOT NULL UNIQUE,
+        correo VARCHAR(254) NOT NULL UNIQUE,
+        rol INT NOT NULL
+        );
+
+        INSERT INTO usuarios (nombre, contrasena, correo, rol) VALUES 
+        ('Luis Pedro', '12345678', 'diaz040605@gs.utm.mx', 3),
+        ('Jose Luis', '159753123', 'rablo102516@gs.utm.mx', 1),
+        ('Abdiel Cervantes', '789456123', 'cera131516@gs.utm.mx', 2);
