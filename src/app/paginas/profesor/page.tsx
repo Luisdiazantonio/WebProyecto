@@ -1,26 +1,33 @@
 'use client';
 
-import { FaChalkboardTeacher, FaUserGraduate, FaClipboardList, FaStar, FaSignOutAlt } from 'react-icons/fa';
-import '../../Estilos/dashboard.css';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { FaChalkboardTeacher, FaUserGraduate, FaClipboardList, FaStar, FaSignOutAlt } from 'react-icons/fa';
 import { IoMdAlert } from 'react-icons/io';
+import '../../Estilos/dashboard.css';
 
 export default function DashboardProfesor() {
   const router = useRouter();
 
   const handleLogout = () => {
-    router.push('/interfaces/login');
+    router.push('/paginas/login');
   };
 
   return (
     <>
       <nav className="navbar">
         <h1><FaChalkboardTeacher /> Profesor</h1>
-        <a href="#" className="active"><FaUserGraduate /> Alumnos</a>
-        <a href="#"><FaClipboardList /> Calificaciones</a>
-        <a href="#"><IoMdAlert /> Acerca de</a>
+        <Link href="/alumnos">
+          <span className="active"><FaUserGraduate /> Alumnos</span>
+        </Link>
+        <Link href="#">
+          <span><FaClipboardList /> Calificaciones</span>
+        </Link>
+        <Link href="#">
+          <span><IoMdAlert /> Acerca de</span>
+        </Link>
         <button onClick={handleLogout} className="logout-button">
-          <FaSignOutAlt /> {'>'} Cerrar sesión
+          <FaSignOutAlt />
         </button>
       </nav>
 

@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FaUserGraduate, FaIdCard, FaPen, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
+import { FaIdCard, FaPen, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
 import { IoMdAlert } from "react-icons/io";
+import { BsPersonFillGear, BsPersonPlusFill, BsPersonDashFill, BsPersonFillLock } from "react-icons/bs";
 import '../../Estilos/dashboard.css';
 
 export default function DashboardAlumno() {
@@ -16,15 +17,18 @@ export default function DashboardAlumno() {
   return (
     <>
       <nav className="navbar">
-        <h1><FaUserGraduate /> Alumno</h1>
-        <Link href="/perfil">
+        <h1><BsPersonFillLock /> Administrador</h1>
+        <Link href="/admin">
           <span className="active"><FaIdCard /> Perfil</span>
         </Link>
         <Link href="/examen">
-          <span><FaPen /> Examen</span>
+          <span><BsPersonPlusFill /> Agregar</span>
         </Link>
         <Link href="/resultados">
-          <span><FaChartBar /> Resultados</span>
+          <span><BsPersonDashFill /> Eliminar</span>
+        </Link>
+        <Link href="/modificar">
+          <span><BsPersonFillGear /> Modificar</span>
         </Link>
         <Link href="/acerca-de">
           <span><IoMdAlert /> Acerca de</span>
