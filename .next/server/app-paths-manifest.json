@@ -1,7 +1,10 @@
 {
   "/apilocal/usuarios/route": "app/apilocal/usuarios/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js",
-  "/paginas/alumno/page": "app/paginas/alumno/page.js",
+  "/paginas/admin/page": "app/paginas/admin/page.js",
   "/paginas/examen/page": "app/paginas/examen/page.js",
-  "/paginas/login/page": "app/paginas/login/page.js"
+  "/paginas/juniors/page": "app/paginas/juniors/page.js",
+  "/paginas/login/page": "app/paginas/login/page.js",
+  "/paginas/profesor/page": "app/paginas/profesor/page.js"
 }
