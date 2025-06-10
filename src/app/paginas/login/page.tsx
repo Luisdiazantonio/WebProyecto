@@ -10,20 +10,29 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const res = await fetch('/api/login', {
+  try {
+    const res = await fetch('http://localhost:3000/apilocal/usuarios', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ username, password }),
+      cache: 'no-store',
     });
 
-    if (res.ok) {
-      router.push('/dashboard');
-    } else {
-      alert('Usuario o contraseña incorrectos');
+    if (!res.ok) {
+      return null;
     }
-  };
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black text-[#00ffcc] font-mono">

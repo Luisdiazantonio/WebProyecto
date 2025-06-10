@@ -1,0 +1,3 @@
+{
+  "/apilocal/usuarios/[nombre]/route": "app/apilocal/usuarios/[nombre]/route.js"
+}
