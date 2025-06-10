@@ -10,29 +10,45 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await fetch('http://localhost:3000/apilocal/usuarios', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-      cache: 'no-store',
-    });
+    try {
+      const res = await fetch('http://localhost:3000/apilocal/usuarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+        cache: 'no-store',
+      });
 
-    if (!res.ok) {
-      return null;
+      if (!res.ok) {
+        console.error('Error en la respuesta del servidor');
+        return;
+      }
+
+      const data = await res.json();
+
+      // Verifica el valor recibido y redirige
+      switch (data) {
+        case 1:
+          router.push('/paginas/admin');
+          break;
+        case 2:
+          router.push('/paginas/profesor');
+          break;
+        case 3:
+          router.push('/paginas/alumno');
+          break;
+        default:
+          console.warn('Valor inesperado recibido:', data);
+          break;
+      }
+
+    } catch (error) {
+      console.error('Error en el login:', error);
     }
-
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    return null;
-  }
-};
-
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black text-[#00ffcc] font-mono">
