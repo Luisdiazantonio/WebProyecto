@@ -1,3 +1,5 @@
 {
+  "/apilocal/usuarios/route": "app/apilocal/usuarios/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/paginas/login/page": "app/paginas/login/page.js"
 }

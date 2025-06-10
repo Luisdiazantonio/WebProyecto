@@ -12,7 +12,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Envío al endpoint ficticio, reemplaza por tu lógica real
+    // Envío al endpoint ficticio, reemplaza por tu lógica real consulta a la api para comprobar 
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
