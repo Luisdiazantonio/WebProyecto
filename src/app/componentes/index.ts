@@ -1,1 +1,0 @@
-export { Barra } from './Barra';
