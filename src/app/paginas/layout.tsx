@@ -2,11 +2,11 @@ import { Barra } from "../componentes";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-slate-100 w-screen h-screen antialiased text-slate-900 selection:bg-blue-400 selection:text-white">
+    <div className="flex items-center justify-center">
       {/* Barra superior */}
-      <Barra />
+      {/* <Barra /> */}
       
-      <div className="pt-16 p-4 w-full h-full overflow-y-auto bg-[#fddea8]">
+      <div className="pt-16 p-4 w-full h-full overflow-y-auto">
         {children}
       </div>
     </div>

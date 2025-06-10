@@ -1,0 +1,73 @@
+/* [project]/src/app/Estilos/estilo.css [app-client] (css) */
+body {
+  color: #0fc;
+  background-color: #000;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: Fira Code, monospace;
+  display: flex;
+}
+
+.container {
+  background-color: #111;
+  border: 1px solid #0fc3;
+  border-radius: 10px;
+  width: 340px;
+  padding: 40px;
+  box-shadow: 0 0 20px #0fc5;
+}
+
+h2 {
+  text-align: center;
+  color: #0fc;
+  margin-bottom: 20px;
+}
+
+input[type="text"], input[type="email"], input[type="password"], select {
+  color: #0fc;
+  background-color: #000;
+  border: 1px solid #0fc5;
+  border-radius: 5px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+button {
+  color: #000;
+  cursor: pointer;
+  background-color: #0fc;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #00e6b8;
+}
+
+.link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+a {
+  color: #0fc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/*# sourceMappingURL=src_app_Estilos_estilo_d4f846b7.css.map*/

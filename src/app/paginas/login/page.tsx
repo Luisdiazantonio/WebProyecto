@@ -28,7 +28,7 @@ export default function LoginPage() {
 
   return (
     <div className="container">
-      <h2>// Iniciar Sesión</h2>
+      <h2>// Examenes</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -48,9 +48,6 @@ export default function LoginPage() {
         />
         <button type="submit">{'>'} Entrar</button>
       </form>
-      <div className="link">
-        <a href="/interfaces/register">{'>'} ¿No tienes cuenta?</a>
-      </div>
     </div>
   );
 }
