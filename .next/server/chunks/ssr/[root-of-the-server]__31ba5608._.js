@@ -54,26 +54,141 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$ico
 function ExamenPage() {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const subjects = [
-        'Estructura de Datos',
-        'Programación Web',
-        'Sistemas Operativos'
+        {
+            displayName: 'Base de Datos',
+            dbName: 'bd'
+        },
+        {
+            displayName: 'Programación Web',
+            dbName: 'web'
+        },
+        {
+            displayName: 'Sistemas Operativos',
+            dbName: 'so'
+        }
     ];
     const [questionsBySubject, setQuestionsBySubject] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({});
     const [loadingSubject, setLoadingSubject] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [userAnswers, setUserAnswers] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({});
+    const [examResults, setExamResults] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({}); // Para almacenar y mostrar la calificación
+    // Asumiendo un ID de alumno (esto debería venir de tu autenticación/sesión)
+    const alumnoId = 123; // ¡Cambia esto por el ID real del alumno logueado!
+    const [username, setUsername] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const storedUsername = localStorage.getItem('username');
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        // Se ejecuta solo en el cliente
+        if (storedUsername) {
+            setUsername(storedUsername);
+        } else {
+            // Si no hay datos, redirige al login
+            router.push('/login');
+        }
+    }, [
+        router
+    ]);
     const generarExamenPorMateria = async (subject)=>{
-        setLoadingSubject(subject);
+        setLoadingSubject(subject.displayName);
         try {
-            const res = await fetch(`/api/examen?subject=${encodeURIComponent(subject)}`);
+            const res = await fetch(`/apilocal/cuestionarios?materia=${encodeURIComponent(subject.dbName)}`);
+            if (!res.ok) {
+                const errorData = await res.json().catch(()=>({
+                        message: 'Error desconocido'
+                    }));
+                throw new Error(errorData.message || `Error ${res.status}: ${res.statusText}`);
+            }
             const data = await res.json();
             setQuestionsBySubject((prev)=>({
                     ...prev,
-                    [subject]: data
+                    [subject.displayName]: data
                 }));
+            // Limpiar respuestas anteriores y resultados para esta materia si se regenera
+            setUserAnswers((prev)=>{
+                const newAnswers = {
+                    ...prev
+                };
+                data.forEach((q)=>delete newAnswers[q.id]);
+                return newAnswers;
+            });
+            setExamResults((prev)=>({
+                    ...prev,
+                    [subject.displayName]: null
+                })); // Limpiar resultado anterior
         } catch (error) {
-            console.error(error);
-            alert(`Error al generar examen de ${subject}`);
+            console.error('Error al generar examen:', error);
+            alert(`Error al generar examen de ${subject.displayName}: ${error.message}`);
         } finally{
             setLoadingSubject(null);
+        }
+    };
+    const handleAnswerChange = (questionId, tipo, value)=>{
+        setUserAnswers((prev)=>{
+            if (tipo === 'opcion' || tipo === 'abierta') {
+                return {
+                    ...prev,
+                    [questionId]: value
+                };
+            }
+            return prev;
+        });
+    };
+    const enviarExamen = async (subjectDisplayName, subjectDbName)=>{
+        const questions = questionsBySubject[subjectDisplayName];
+        if (!questions || questions.length === 0) {
+            alert('No hay preguntas para enviar en este examen.');
+            return;
+        }
+        const examData = {
+            id_alumno: alumnoId,
+            materia: subjectDbName,
+            // --- CAMBIO CLAVE AQUÍ: ENVIAR LA PREGUNTA ORIGINAL COMPLETA ---
+            respuestas_enviadas: questions.map((q)=>({
+                    id_pregunta: q.id,
+                    tipo: q.tipo,
+                    pregunta_original: q,
+                    respuesta_usuario: userAnswers[q.id] || null
+                }))
+        };
+        console.log('Datos a enviar para calificación:', examData);
+        try {
+            const res = await fetch('/apilocal/resultados', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(examData)
+            });
+            if (!res.ok) {
+                const errorData = await res.json().catch(()=>({
+                        message: 'Error desconocido'
+                    }));
+                throw new Error(errorData.message || `Error ${res.status}: ${res.statusText}`);
+            }
+            const result = await res.json();
+            const finalScore = result.calificacionFinal; // Obtenemos la calificación sobre 10 del backend
+            alert(`Examen de ${subjectDisplayName} enviado con éxito. Calificación: ${finalScore}/10`);
+            console.log('Resultado del envío:', result);
+            setExamResults((prev)=>({
+                    ...prev,
+                    [subjectDisplayName]: finalScore
+                })); // Guarda la calificación para mostrarla
+            // Opcional: limpiar las preguntas y respuestas después del envío si no quieres que se puedan revisar
+            setQuestionsBySubject((prev)=>{
+                const newState = {
+                    ...prev
+                };
+                delete newState[subjectDisplayName];
+                return newState;
+            });
+            setUserAnswers((prev)=>{
+                const newState = {
+                    ...prev
+                };
+                questions.forEach((q)=>delete newState[q.id]);
+                return newState;
+            });
+        } catch (error) {
+            console.error('Error al enviar examen:', error);
+            alert(`Error al enviar examen de ${subjectDisplayName}: ${error.message}`);
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -87,7 +202,7 @@ function ExamenPage() {
                         children: "Examen"
                     }, void 0, false, {
                         fileName: "[project]/src/app/paginas/examen/page.tsx",
-                        lineNumber: 40,
+                        lineNumber: 151,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -98,24 +213,24 @@ function ExamenPage() {
                                 className: "text-xl"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                lineNumber: 42,
+                                lineNumber: 153,
                                 columnNumber: 11
                             }, this),
                             " Regresar"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/paginas/examen/page.tsx",
-                        lineNumber: 41,
+                        lineNumber: 152,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/paginas/examen/page.tsx",
-                lineNumber: 39,
+                lineNumber: 150,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "space-y-6 max-w-3xl mx-auto",
+                className: "space-y-6 max-w-3xl mx-auto w-full",
                 children: subjects.map((subject)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "bg-neutral-900 p-4 rounded-xl border border-teal-500/30",
                         children: [
@@ -124,101 +239,138 @@ function ExamenPage() {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         className: "text-lg font-semibold",
-                                        children: subject
+                                        children: subject.displayName
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                        lineNumber: 50,
+                                        lineNumber: 161,
+                                        columnNumber: 15
+                                    }, this),
+                                    !questionsBySubject[subject.displayName] && !examResults[subject.displayName] && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: ()=>generarExamenPorMateria(subject),
+                                        disabled: loadingSubject === subject.displayName,
+                                        className: "bg-blue-600 hover:bg-blue-700 text-white py-1 px-4 rounded transition ml-6",
+                                        children: loadingSubject === subject.displayName ? 'Generando...' : 'Generar examen'
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/paginas/examen/page.tsx",
+                                        lineNumber: 164,
                                         columnNumber: 17
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        onClick: ()=>generarExamenPorMateria(subject),
-                                        disabled: loadingSubject === subject,
-                                        className: "bg-blue-600 hover:bg-blue-700 text-white py-1 px-4 rounded transition ml-6",
-                                        children: loadingSubject === subject ? 'Generando...' : 'Generar examen'
-                                    }, void 0, false, {
+                                    examResults[subject.displayName] && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-xl font-bold text-teal-400",
+                                        children: [
+                                            "Calificación: ",
+                                            examResults[subject.displayName],
+                                            "/10"
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                        lineNumber: 51,
+                                        lineNumber: 174,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                lineNumber: 49,
+                                lineNumber: 160,
                                 columnNumber: 13
                             }, this),
-                            questionsBySubject[subject] && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                            questionsBySubject[subject.displayName] && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                                 className: "space-y-4",
-                                children: questionsBySubject[subject].map((q)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "font-medium",
-                                                children: q.question
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                                lineNumber: 65,
-                                                columnNumber: 21
-                                            }, this),
-                                            q.type === 'opcion' && q.options?.map((opt, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                    className: "flex items-center gap-2",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                            type: "radio",
-                                                            name: `q-${q.id}`,
-                                                            value: opt,
-                                                            className: "accent-teal-400"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                                            lineNumber: 69,
-                                                            columnNumber: 27
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            children: opt
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                                            lineNumber: 70,
-                                                            columnNumber: 27
-                                                        }, this)
-                                                    ]
-                                                }, idx, true, {
+                                children: [
+                                    questionsBySubject[subject.displayName].map((q)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "border-t border-teal-500/10 pt-4 mt-4 first:mt-0 first:pt-0 first:border-t-0",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "font-medium text-lg mb-2",
+                                                    children: q.pregunta
+                                                }, void 0, false, {
                                                     fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                                    lineNumber: 68,
-                                                    columnNumber: 25
-                                                }, this)),
-                                            q.type === 'abierta' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
-                                                name: `q-${q.id}`,
-                                                rows: 3,
-                                                className: "w-full p-2 bg-black border border-teal-500/30 rounded mt-2"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                                lineNumber: 74,
-                                                columnNumber: 23
-                                            }, this)
-                                        ]
-                                    }, q.id, true, {
+                                                    lineNumber: 183,
+                                                    columnNumber: 21
+                                                }, this),
+                                                q.tipo === 'opcion' && q.opciones && q.opciones.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "space-y-1",
+                                                    children: q.opciones.map((opt)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                            className: "flex items-center gap-2 text-base",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                                    type: "radio",
+                                                                    name: `q-${q.id}`,
+                                                                    value: opt.texto,
+                                                                    onChange: (e)=>handleAnswerChange(q.id, q.tipo, e.target.value),
+                                                                    checked: userAnswers[q.id] === opt.texto,
+                                                                    className: "accent-teal-400 w-4 h-4"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/paginas/examen/page.tsx",
+                                                                    lineNumber: 188,
+                                                                    columnNumber: 29
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    children: opt.texto
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/paginas/examen/page.tsx",
+                                                                    lineNumber: 196,
+                                                                    columnNumber: 29
+                                                                }, this)
+                                                            ]
+                                                        }, opt.id, true, {
+                                                            fileName: "[project]/src/app/paginas/examen/page.tsx",
+                                                            lineNumber: 187,
+                                                            columnNumber: 27
+                                                        }, this))
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/paginas/examen/page.tsx",
+                                                    lineNumber: 185,
+                                                    columnNumber: 23
+                                                }, this),
+                                                q.tipo === 'abierta' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                                    name: `q-${q.id}`,
+                                                    rows: 3,
+                                                    placeholder: "Escribe tu respuesta aquí...",
+                                                    value: userAnswers[q.id] || '',
+                                                    onChange: (e)=>handleAnswerChange(q.id, q.tipo, e.target.value),
+                                                    className: "w-full p-2 bg-black border border-teal-500/30 rounded mt-2 text-teal-100 placeholder-teal-600 focus:ring focus:ring-teal-400 focus:border-teal-400 outline-none"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/paginas/examen/page.tsx",
+                                                    lineNumber: 202,
+                                                    columnNumber: 23
+                                                }, this)
+                                            ]
+                                        }, q.id, true, {
+                                            fileName: "[project]/src/app/paginas/examen/page.tsx",
+                                            lineNumber: 182,
+                                            columnNumber: 19
+                                        }, this)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        type: "button",
+                                        onClick: ()=>enviarExamen(subject.displayName, subject.dbName),
+                                        className: "w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition mt-6",
+                                        children: "Enviar Examen"
+                                    }, void 0, false, {
                                         fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                        lineNumber: 64,
-                                        columnNumber: 19
-                                    }, this))
-                            }, void 0, false, {
+                                        lineNumber: 213,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/src/app/paginas/examen/page.tsx",
-                                lineNumber: 62,
+                                lineNumber: 180,
                                 columnNumber: 15
                             }, this)
                         ]
-                    }, subject, true, {
+                    }, subject.displayName, true, {
                         fileName: "[project]/src/app/paginas/examen/page.tsx",
-                        lineNumber: 48,
+                        lineNumber: 159,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/app/paginas/examen/page.tsx",
-                lineNumber: 46,
+                lineNumber: 157,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/paginas/examen/page.tsx",
-        lineNumber: 38,
+        lineNumber: 149,
         columnNumber: 5
     }, this);
 }

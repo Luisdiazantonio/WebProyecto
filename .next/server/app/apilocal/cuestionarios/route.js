@@ -1,0 +1,11 @@
+const CHUNK_PUBLIC_PATH = "server/app/apilocal/cuestionarios/route.js";
+const runtime = require("../../../chunks/[turbopack]_runtime.js");
+runtime.loadChunk("server/chunks/node_modules_next_fcd37e80._.js");
+runtime.loadChunk("server/chunks/node_modules_mysql2_a3ea85f4._.js");
+runtime.loadChunk("server/chunks/node_modules_iconv-lite_1d546d44._.js");
+runtime.loadChunk("server/chunks/node_modules_aws-ssl-profiles_lib_a90e16a3._.js");
+runtime.loadChunk("server/chunks/node_modules_52e59730._.js");
+runtime.loadChunk("server/chunks/[root-of-the-server]__0ac0f7c0._.js");
+runtime.getOrInstantiateRuntimeModule("[project]/.next-internal/server/app/apilocal/cuestionarios/route/actions.js [app-rsc] (server actions loader, ecmascript)", CHUNK_PUBLIC_PATH);
+runtime.getOrInstantiateRuntimeModule("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/apilocal/cuestionarios/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)", CHUNK_PUBLIC_PATH);
+module.exports = runtime.getOrInstantiateRuntimeModule("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/apilocal/cuestionarios/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)", CHUNK_PUBLIC_PATH).exports;

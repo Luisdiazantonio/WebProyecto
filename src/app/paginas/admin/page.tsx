@@ -59,16 +59,6 @@ export default function DashboardAlumno() {
                 Eliminar Junior
               </div>
             </Link>
-
-            <Link
-              href="/paginas/modificar"
-              className="w-full bg-neutral-900 border border-teal-400/30 hover:border-teal-300 shadow-md rounded-xl p-6 hover:shadow-teal-300/20 transition"
-            >
-              <div className="flex flex-col items-center text-lg">
-                <BsPersonFillGear className="mb-2 text-2xl" />
-                Modificar Junior
-              </div>
-            </Link>
           </div>
       </main>
     </div>

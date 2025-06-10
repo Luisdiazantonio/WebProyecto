@@ -1,10 +1,64 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { FaArrowLeft, FaTrash } from 'react-icons/fa';
 
+interface Usuario {
+  id_usuario: number;
+  nombre: string;
+}
+
 export default function EliminarJuniorPage() {
-  const juniors = ['Carlos Méndez', 'Lucía Torres', 'Daniel Pérez'];
+  const [juniors, setJuniors] = useState<Usuario[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchJuniors = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/apilocal/usuarios');
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Error desconocido al obtener juniors');
+        }
+        const data = await res.json();
+        console.log('Datos recibidos de /apilocal/usuarios:', data);
+
+        if (!Array.isArray(data)) {
+          throw new Error('Respuesta inesperada: no es un array');
+        }
+        setJuniors(data);
+      } catch (err: any) {
+        console.error('fetchJuniors error:', err);
+        setError(err.message);
+        setJuniors([]);
+      }
+    };
+    fetchJuniors();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    if (!confirm('¿Estás seguro que quieres eliminar este usuario?')) return;
+
+    try {
+      const res = await fetch('/apilocal/usuarios', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'http://localhost:3000/apilocal/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Error desconocido al eliminar usuario');
+      }
+
+      console.log('Usuario eliminado:', id);
+      setJuniors((prev) => prev.filter((u) => u.id_usuario !== id));
+    } catch (err: any) {
+      console.error('handleDelete error:', err);
+      setError(err.message || 'Error de conexión al eliminar');
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-teal-300 font-mono px-6 py-6">
@@ -21,19 +75,21 @@ export default function EliminarJuniorPage() {
       </nav>
 
       {/* Lista de Juniors */}
-      <div className="space-y-4 max-w-lg mx-auto">
-        {juniors.map((junior, index) => (
-          <div
-            key={index}
-            className="flex justify-between items-center bg-neutral-900 p-4 rounded-lg border border-teal-500/20 shadow hover:bg-neutral-800 transition"
-          >
-            <span>{junior}</span>
-            <button className="text-red-400 hover:text-red-500 transition">
-              <FaTrash />
-            </button>
-          </div>
-        ))}
+      {juniors.map((junior, index) => (
+      <div
+        key={junior.id_usuario ?? index}        // <–– aquí
+        className="flex justify-between items-center bg-neutral-900 p-4 rounded-lg border border-teal-500/20 shadow hover:bg-neutral-800 transition"
+      >
+        <span>{junior.nombre}</span>
+        <button
+          onClick={() => handleDelete(junior.id_usuario)}
+          className="text-red-400 hover:text-red-500 transition"
+        >
+          <FaTrash />
+        </button>
       </div>
+    ))}
+
     </div>
   );
 }

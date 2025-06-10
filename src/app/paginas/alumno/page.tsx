@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import {
   FaUserGraduate,
   FaIdCard,
@@ -68,3 +69,5 @@ export default function DashboardAlumno() {
     </div>
   );
 }
+
+

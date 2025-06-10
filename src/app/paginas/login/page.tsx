@@ -30,7 +30,11 @@ export default function LoginPage() {
         return;
       }
 
+      //guardar credenciales
+
       const data = await res.json();
+      localStorage.setItem('username',username);
+
 
       if (!data.rol) {
         setErrorMsg('Rol no encontrado o inválido.');

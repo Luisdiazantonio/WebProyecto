@@ -74,7 +74,9 @@ function LoginPage() {
                 setErrorMsg(err.error || 'Error desconocido');
                 return;
             }
+            //guardar credenciales
             const data = await res.json();
+            localStorage.setItem('username', username);
             if (!data.rol) {
                 setErrorMsg('Rol no encontrado o inválido.');
                 return;
@@ -108,7 +110,7 @@ function LoginPage() {
                     children: "SPM"
                 }, void 0, false, {
                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                    lineNumber: 63,
+                    lineNumber: 67,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -122,7 +124,7 @@ function LoginPage() {
                                     className: "mr-2"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 66,
+                                    lineNumber: 70,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -135,13 +137,13 @@ function LoginPage() {
                                     className: "bg-black outline-none text-[#00ffcc] w-full"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 67,
+                                    lineNumber: 71,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/paginas/login/page.tsx",
-                            lineNumber: 65,
+                            lineNumber: 69,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -151,7 +153,7 @@ function LoginPage() {
                                     className: "mr-2"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 78,
+                                    lineNumber: 82,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -164,13 +166,13 @@ function LoginPage() {
                                     className: "bg-black outline-none text-[#00ffcc] w-full"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 83,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/paginas/login/page.tsx",
-                            lineNumber: 77,
+                            lineNumber: 81,
                             columnNumber: 11
                         }, this),
                         errorMsg && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -178,7 +180,7 @@ function LoginPage() {
                             children: errorMsg
                         }, void 0, false, {
                             fileName: "[project]/src/app/paginas/login/page.tsx",
-                            lineNumber: 90,
+                            lineNumber: 94,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -189,7 +191,7 @@ function LoginPage() {
                                     className: "mr-2 text-3xl"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                                    lineNumber: 96,
+                                    lineNumber: 100,
                                     columnNumber: 13
                                 }, this),
                                 " ",
@@ -197,24 +199,24 @@ function LoginPage() {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/paginas/login/page.tsx",
-                            lineNumber: 92,
+                            lineNumber: 96,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/paginas/login/page.tsx",
-                    lineNumber: 64,
+                    lineNumber: 68,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/paginas/login/page.tsx",
-            lineNumber: 62,
+            lineNumber: 66,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/paginas/login/page.tsx",
-        lineNumber: 61,
+        lineNumber: 65,
         columnNumber: 5
     }, this);
 }

@@ -180,6 +180,8 @@ module.exports = mod;
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
+    "DELETE": (()=>DELETE),
+    "GET": (()=>GET),
     "POST": (()=>POST)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$database$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/database.ts [app-route] (ecmascript)");
@@ -190,8 +192,6 @@ async function POST(request) {
     try {
         const body = await request.json();
         const { username, password } = body;
-        console.log("Nombre: %s", username);
-        console.log("Contraseña: %s", password);
         if (!username || !password) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: 'Faltan datos'
@@ -199,39 +199,75 @@ async function POST(request) {
                 status: 400
             });
         }
-        // Consulta segura con prepared statement
         const [rows] = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$database$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].query('SELECT rol FROM usuarios WHERE nombre = ? AND contrasena = ?', [
             username,
             password
         ]);
-        if (!rows || rows.length === 0) {
+        if (rows.length === 0) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: 'Usuario o contraseña incorrectos'
             }, {
                 status: 401
             });
         }
-        const rol = rows[0].rol;
-        console.log("Rol encontrado: %s", rol);
-        // Validar tipo de rol
-        if (![
-            1,
-            2,
-            3
-        ].includes(rol)) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'Rol no válido'
-            }, {
-                status: 403
-            });
-        }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            rol
+            rol: rows[0].rol
         });
     } catch (error) {
-        console.error('Error en la consulta:', error);
+        console.error('Error en POST /apilocal/usuarios:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: 'Error en la consulta',
+            details: error.message
+        }, {
+            status: 500
+        });
+    }
+}
+async function GET() {
+    try {
+        console.log('GET /apilocal/usuarios — consultando usuarios con rol = 3');
+        const [rows] = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$database$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].query('SELECT id_usuario, nombre FROM usuarios WHERE rol = 3');
+        console.log(`GET /apilocal/usuarios — encontrados ${rows.length} registros`);
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(rows);
+    } catch (error) {
+        console.error('Error en GET /apilocal/usuarios:', error);
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            error: 'Error al obtener usuarios',
+            details: error.message
+        }, {
+            status: 500
+        });
+    }
+}
+async function DELETE(request) {
+    try {
+        const { id } = await request.json();
+        console.log('DELETE /apilocal/usuarios — id recibido:', id);
+        if (!id) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Falta el id del usuario'
+            }, {
+                status: 400
+            });
+        }
+        const [result] = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$database$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].query('DELETE FROM usuarios WHERE id_usuario = ? AND rol = 3', [
+            id
+        ]);
+        if (result.affectedRows === 0) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Usuario no encontrado o no es junior'
+            }, {
+                status: 404
+            });
+        }
+        console.log(`DELETE /apilocal/usuarios — usuario ${id} eliminado`);
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            message: 'Usuario eliminado correctamente'
+        });
+    } catch (error) {
+        console.error('Error en DELETE /apilocal/usuarios:', error);
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            error: 'Error al eliminar usuario',
             details: error.message
         }, {
             status: 500

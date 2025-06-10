@@ -12,6 +12,9 @@ export default function AgregarJuniorPage() {
     rol: 3, // rol por defecto
   });
 
+  const [mensaje, setMensaje] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -19,12 +22,37 @@ export default function AgregarJuniorPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Nuevo Junior:', formData);
+    setMensaje(null);
+    setError(null);
 
-    // Aquí podrías enviar los datos a una API
-    // fetch('/api/agregar', { method: 'POST', body: JSON.stringify(formData) })
+    try {
+      const res = await fetch('http://localhost:3000/apilocal/agregar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'Error desconocido');
+        return;
+      }
+
+      setMensaje(data.message || 'Usuario agregado correctamente');
+      setFormData({
+        username: '',
+        password: '',
+        email: '',
+        rol: 3,
+      });
+    } catch (error) {
+      setError('Error al conectar con el servidor');
+    }
   };
 
   return (
@@ -90,6 +118,9 @@ export default function AgregarJuniorPage() {
             Guardar
           </button>
         </form>
+
+        {mensaje && <p className="mt-4 text-green-400">{mensaje}</p>}
+        {error && <p className="mt-4 text-red-500">{error}</p>}
       </div>
     </div>
   );

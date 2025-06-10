@@ -69,14 +69,14 @@ function DashboardAlumno() {
                                 className: "text-2xl"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                                lineNumber: 27,
+                                lineNumber: 28,
                                 columnNumber: 11
                             }, this),
                             "Junior:"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                        lineNumber: 26,
+                        lineNumber: 27,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -88,14 +88,14 @@ function DashboardAlumno() {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FaPen"], {}, void 0, false, {
                                         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                                        lineNumber: 34,
+                                        lineNumber: 35,
                                         columnNumber: 13
                                     }, this),
                                     "Examen"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                                lineNumber: 33,
+                                lineNumber: 34,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -104,20 +104,20 @@ function DashboardAlumno() {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FaChartBar"], {}, void 0, false, {
                                         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                                        lineNumber: 38,
+                                        lineNumber: 39,
                                         columnNumber: 13
                                     }, this),
                                     "Resultados"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                                lineNumber: 37,
+                                lineNumber: 38,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                        lineNumber: 32,
+                        lineNumber: 33,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -128,19 +128,19 @@ function DashboardAlumno() {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$io$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["IoMdAlert"], {}, void 0, false, {
                                     fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                                    lineNumber: 48,
+                                    lineNumber: 49,
                                     columnNumber: 15
                                 }, this),
                                 "Acerca de"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                            lineNumber: 44,
+                            lineNumber: 45,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                        lineNumber: 43,
+                        lineNumber: 44,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -150,18 +150,18 @@ function DashboardAlumno() {
                             className: "text-2xl"
                         }, void 0, false, {
                             fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                            lineNumber: 57,
+                            lineNumber: 58,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                        lineNumber: 53,
+                        lineNumber: 54,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                lineNumber: 24,
+                lineNumber: 25,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -172,7 +172,7 @@ function DashboardAlumno() {
                         children: "Bienvenido al Sistema de Programadores Mexicanos (SPM)"
                     }, void 0, false, {
                         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                        lineNumber: 63,
+                        lineNumber: 64,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -181,24 +181,24 @@ function DashboardAlumno() {
                             children: "Realiza los examenes asignados y demuestra tus habilidades"
                         }, void 0, false, {
                             fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                            lineNumber: 65,
+                            lineNumber: 66,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                        lineNumber: 64,
+                        lineNumber: 65,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/paginas/alumno/page.tsx",
-                lineNumber: 62,
+                lineNumber: 63,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/paginas/alumno/page.tsx",
-        lineNumber: 22,
+        lineNumber: 23,
         columnNumber: 5
     }, this);
 }
